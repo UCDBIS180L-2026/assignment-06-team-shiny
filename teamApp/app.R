@@ -2,7 +2,7 @@ library(shiny)
 # other libraries here
 
 # data loading and one-time processing here
-
+data(msleep)
 
 # Define UI for application 
 ui <- fluidPage( #create the overall page
