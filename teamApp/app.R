@@ -6,22 +6,26 @@ library(tidyverse)
 #data(msleep)
 head(msleep)
 
+vora <- setdiff(unique(msleep$vore), c(NA, "NA"))
+
 # Define UI for application 
 ui <- fluidPage(
   
-  titlePanel("Sleep Data"),
+  titlePanel("Sleep Data with respect to conservation"),
   
-  helpText("placeholder"),
+  helpText("In this website we are exploring the effect of conservation to sleep statistics. User can select Vore type and view how conservatio affect each of the sleep statistics such as sleep time and cycles on a graphed boxplot."),
+  
+  
   
   sidebarLayout(
     sidebarPanel(
-      selectizeInput('genus', 'Select Genus:',
-                     choices = msleep$genus),
+      selectizeInput('vora', 'Select Vore:',
+                     choices = vora),
       radioButtons('sleep_stats', 'Choose a sleep statistic to display:',
-                   c("Sleep_total",
-                     "REM_sleep",
-                     "Sleep_Cycle",
-                     "Awake")
+                   c("sleep_total",
+                     "sleep_rem",
+                     "sleep_cycle",
+                     "awake")
                    
       )
     ),
@@ -37,12 +41,15 @@ ui <- fluidPage(
 # Define server logic 
 server <- function(input, output) {
   # server code here
+  
+  
+  
   output$plot <- renderPlot({
     
     sleepStats <- as.name(input$sleep_stats) #convert as variable names
     
     msleep %>% #select from input:genus for filtering
-      filter(vore != input$genus) %>%
+      filter(vore == input$vora) %>%
       ggplot(aes(x = conservation, 
                  y = !! sleepStats,
                  fill = conservation)) + #then plot the sleep stats with conservation
