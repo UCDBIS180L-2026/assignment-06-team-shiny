@@ -11,14 +11,14 @@ vora <- setdiff(unique(msleep$vore), c(NA, "NA"))
 # Define UI for application 
 ui <- fluidPage(
   
-  titlePanel("Sleep Data with respect to conservation"),
+  titlePanel("Sleep Data with respect to Genus"),
   
-  helpText("In this website we are exploring the effect of conservation to sleep statistics. User can select Vore type and view how conservatio affect each of the sleep statistics such as sleep time and cycles on a graphed boxplot."),
+  helpText("In this website we are exploring how sleep statistics varies among Genus. You can first select the big group by what food they consome(Plant, Meat, hybrid, or if they are insect). Then you can view how sleep statistics such as sleep time and cycles varies between different genus group on a graphed boxplot."),
   
   
   
   sidebarLayout(
-    sidebarPanel(
+    sidebarPanel(width = 3,
       selectizeInput('vora', 'Select Vore:',
                      choices = vora),
       radioButtons('sleep_stats', 'Choose a sleep statistic to display:',
@@ -29,7 +29,7 @@ ui <- fluidPage(
                    
       )
     ),
-    mainPanel(
+    mainPanel(width = 9, 
       plotOutput("plot")
     )
   )
@@ -50,12 +50,19 @@ server <- function(input, output) {
     
     msleep %>% #select from input:genus for filtering
       filter(vore == input$vora) %>%
-      ggplot(aes(x = conservation, 
+      ggplot(aes(x = order, 
                  y = !! sleepStats,
-                 fill = conservation)) + #then plot the sleep stats with conservation
+                 fill = order)) + #then plot the sleep stats with conservation
       geom_boxplot(alpha=0.75) +
-      labs(x= "Conservation", fill="Conservation Status") +
-      theme_minimal()
+      labs(title = sleepStats, x= "Order", fill="Order")+
+      theme(axis.text.x = element_text(size = 14,angle = 30, hjust=1),
+            axis.text.y = element_text(size = 14),
+            axis.title = element_text(size = 16),
+            plot.title = element_text(size = 16, hjust = 0.5),
+            legend.text = element_text(size = 14),
+            legend.title = element_text(siz = 16))
+      
+      
   })
 }
 
