@@ -36,7 +36,7 @@ ui <- fluidPage( #create the overall page
       
       # Show a plot of the generated distribution
       mainPanel(
-        plotOutput("boxPlot")
+        plotOutput("violinPlot")
       )
     )
   )
@@ -52,7 +52,7 @@ server <- function(input, output) {
   #     when inputs change
   #  2) Its output type is a plot
   
-  output$boxPlot <- renderPlot({
+  output$violinPlot <- renderPlot({
     
     plotTrait <- as.name(input$trait) # convert string to name
     
@@ -65,7 +65,7 @@ server <- function(input, output) {
     )
     
     # draw the boxplot for the specified trait
-    pl + geom_boxplot()
+    pl + geom_violin()
   })
 }
 
