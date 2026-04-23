@@ -8,3 +8,6 @@ Add the URL to launch your app below:
 
 This app was developed by: 
 
+Renxiao Deng
+
+Lee Beye
